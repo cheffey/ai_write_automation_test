@@ -1,0 +1,29 @@
+ModObject 的结构信息:
+```
+class ModObject:
+    def __init__(self, api_client, id, name=None, info=None):
+        self.id = id
+        self.api_client = api_client
+        self.name = name
+        self.info = info
+```
+
+仿照以下示例代码:
+```python
+{EXAMPLE}
+```
+
+api 文档:
+{API_DOC}
+
+
+示例代码把对象的API操作进行了封装, 在API测试可以直接调用.
+请仿造他的写法, 对提供的 api接口实现 mod_object, 要求:
+1. 仅根据提供的API 进行代码生成, 不要凭空添加代码; 如果无法创建任何方法, 则返回空的 ModObject; 无法直接操作database, 只能根据提供的api 文档通过 api 进行操作, 再次强调不能凭空创造代码
+2. 按照高内聚低耦合, 面向对象编程的思路, 首先确定这个api 放到哪个mod_object应该放在哪个对象中.
+    a. 例1: 如果操作使用到了 user_id, 并且是抽象于 user 的操作, 那么这个操作应该放在 user 对象中.
+    b. 例2: 如果操作没有用到任何 id, 并且是抽象于用户的操作, 那么这个操作应该放在 User 对象中.
+3. 对象都继承于ModObject, 额外的信息放到ModObject的 info中.
+4. 输出格式分为两部分
+    a. 用json输出这是在哪个 mod_object, json 格式: {{"mod_object": ["Company", "User"]}}
+    b. 在输出的最后, 用python代码输出这个mod_object的实现, 放到 ```python```中

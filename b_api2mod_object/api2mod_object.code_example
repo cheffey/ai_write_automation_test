@@ -1,0 +1,27 @@
+class Group(ModObject):
+
+    def delete(self) -> dict:
+        data = {"groupId": self.id}
+        return self.client.request("post", "/api/v1/group/delete", data)
+
+    def stop(self) -> dict:
+        data = {"groupId": self.id}
+        return self.client.request("post", "/api/v1/group/stop", data)
+
+    def get_members(self) -> list: # 操作用到了 groupId, 并且是可以抽象于 Group 的操作, 那么这个操作可以放在本对象中.
+        data = {
+            "groupId": self.id,
+        }
+        js = self.client.request("put", "/api/v1/group/members", data)
+        return [User(self.client, x['id'], info=x) for x in js['data']['items']]
+
+
+class User(ModObject):
+    def get_groups(self, ...filter_params) -> list[Group]:
+        ...
+        return [Group(self.client, x['id'], name=x.get('name'), info=x) for x in js['data']['items']]
+
+
+    def create_group(self, ...filter_params) -> "Group":
+        ...
+        return Group(self.client, job_id, name=name, info=info)

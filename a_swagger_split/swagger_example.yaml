@@ -1,0 +1,248 @@
+openapi: 3.0.3
+info:
+  title: MockAPI Documentation
+  version: 1.0.0
+  description: API documentation for User and Company resources with mock data generation
+
+paths:
+  /user:
+    get:
+      summary: Get all users
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+    post:
+      summary: Create a new user
+      responses:
+        '201':
+          description: Created user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /user/{id}:
+    get:
+      summary: Get user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      summary: Update user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    delete:
+      summary: Delete user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Delete confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User deleted"
+
+  /company:
+    get:
+      summary: Get all companies
+      responses:
+        '200':
+          description: List of companies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyResponse'
+    post:
+      summary: Create a new company
+      responses:
+        '201':
+          description: Created company
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+
+  /company/{id}:
+    get:
+      summary: Get company by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Company details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+    put:
+      summary: Update company by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Updated company
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+    delete:
+      summary: Delete company by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Delete confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Company deleted"
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "6153e74d3f8d9b001f4e8d7c"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-10-15T08:30:00Z"
+        name:
+          type: string
+          example: "John Doe"
+        avatar:
+          type: string
+          example: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1.jpg"
+        username:
+          type: string
+          example: "john.doe_23"
+        knownIps:
+          type: array
+          items:
+            type: string
+            examples:
+              - "192.168.0.1"
+              - "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+        profile:
+          type: object
+          properties:
+            firstName:
+              type: string
+              example: "John"
+            lastName:
+              type: string
+              example: "Doe"
+            staticData:
+              type: array
+              items:
+                type: number
+              example: [100, 200, 300]
+
+    Company:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "6153e74d3f8d9b001f4e8d7d"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-10-15T09:00:00Z"
+        name:
+          type: string
+          example: "Tech Corp Inc."
+        avatar:
+          type: string
+          example: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/2.jpg"
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+
+    UserResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        count:
+          type: integer
+          example: 25
+        anyKey:
+          type: string
+          example: "anyValue"
+
+    CompanyResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440001"
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Company'
+        count:
+          type: integer
+          example: 10
+        anyKey:
+          type: string
+          example: "anyValue"

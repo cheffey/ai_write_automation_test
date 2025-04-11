@@ -1,0 +1,13 @@
+def test_all_students_have_scores(client):
+    students = Student.get_all(client)
+    for student in students:
+        scores = student.get_scores()
+        assert scores, f"Student {student.id} has no scores."
+
+
+def test_search_student_by_school(client):
+    schools = School.get_all()
+    school = schools[0]
+    search_result = Student.search(client, school_id=school.id, page=1, page_size=-1)
+    for student in search_result:
+        assert student.school_id == school.id, f"Student {student.id} does not belong to school {school.id}."

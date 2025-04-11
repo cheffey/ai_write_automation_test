@@ -1,0 +1,25 @@
+ModObject 的结构信息:
+```
+class ModObject:
+    def __init__(self, operate_user: User, id, name=None, info=None):
+        self.id = id
+        self.operate_user = operate_user
+        self.name = name
+        self.info = info
+```
+
+合并前的代码:
+```python
+{CODES}
+```
+
+将提供的代码进行合并, 合并成一个class, 並继承于ModObject, 要求:
+1. 仅根据提供的代码进行合并, 不要凭空添加代码; 如果原本就没有方法, 则保持不变; 无法直接操作db, 只能根据提供的代码通过 api 进行操作, 再次强调不能凭空创造代码
+2. 在 引用其他 ModObject 的时候, 在方法的开头使用方法内部 local引用, 防止循环引用. 例如: from .job_instance import JobInstance, 引用时注意转化驼峰到下划线格式
+3. 根据 clean code 的风格, 让代码自解释, 删除不必要的注释
+4. 去除重复的方法和内容类似的方法, 保证类功能的完整性的同时, 减少冗余
+5. 方法按照以下顺序排序:
+    a. 按照 CRUD 顺序
+    b. 按照重要性排序
+6. 在输出的最后, 用python代码输出这个mod_object的实现, 放到 ```python```中
+7. 只输出这个mod_object的实现, 不要输出其他的内容
