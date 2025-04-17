@@ -11,6 +11,7 @@ def extract_interface(class_code):
     in_method = False
     skip_until_indent = False
     last_pass_added = True
+    func_def_finished = True
 
     for line in lines:
         stripped = line.strip()
@@ -18,6 +19,11 @@ def extract_interface(class_code):
         # 跳过空行
         if not stripped:
             continue
+
+        if not func_def_finished:
+            interface_lines.append(line)
+            if stripped.endswith(':'):
+                func_def_finished = True
 
         # 处理类定义行
         if line.startswith('class '):
@@ -33,16 +39,15 @@ def extract_interface(class_code):
             continue
 
         # 处理方法定义
-        if (stripped.startswith('def ') or
-                stripped.startswith('async def ') or
-                stripped.startswith('@property')):
+        if stripped.startswith('def ') or stripped.startswith('async def '):
             if not last_pass_added:
-                last_pass_added = True
                 interface_lines.append('    pass\n')
             interface_lines.append(line)
             last_pass_added = False
             in_method = True
             skip_until_indent = False
+            if not stripped.endswith(':'):
+                func_def_finished = False
             continue
 
         # 处理返回类型注解
@@ -85,7 +90,7 @@ if __name__ == '__main__':
     for py_file in input_mod_objects.iterdir():
         if not py_file.is_file() or py_file.suffix != '.py':
             continue
+        output_file = output_mod_objects / py_file.name
         class_code = py_file.read_text()
         interface_code = extract_interface(class_code)
-        output_file = output_mod_objects / py_file.name
         output_file.write_text(interface_code)
